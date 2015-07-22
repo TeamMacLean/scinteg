@@ -4,7 +4,8 @@
 
     <h1>REPORT OF SCIENTIFIC MISCONDUCT</h1>
 
-    <p>Completing and submitting this form will send an anonymous email notification containing the contents and attachments to the TSL Council Chair, Head of Laboratory and Head of Administration</p>
+    <p>Completing and submitting this form will send an anonymous email notification containing the contents and
+        attachments to the TSL Council Chair, Head of Laboratory and Head of Administration</p>
 
     <form method="post" action="/" enctype="multipart/form-data">
 
@@ -15,12 +16,17 @@
 
         <fieldset>
             <label>If you wish to include any attachments, please add them here:</label>
-            <input type="file" name="attachment" id="attachment">
+            <input type="file" name="attachment[]" id="attachment" multiple="" onChange="makeFileList();">
+            <label>Files selected</label>
+            <ul id="fileList">
+                <li>No Files Selected</li>
+            </ul>
         </fieldset>
 
         <input type="submit" class="primary" value="SUBMIT">
 
     </form>
+
 
 </div>
 <% include foot.ejs %>
