@@ -21,17 +21,17 @@ router.route('/')
   })
   .post(function (req, res) {
     var allegation = req.body.allegation;
-    var attachment = req.files.attachment;
+    var attachments = req.files['attachment[]'];
     var files = [];
 
-    if (attachment) {
-      saveFiles(attachment, function () {
+    if (attachments) {
+      saveFiles(attachments, function () {
         makeSaveAndRender();
-        sendEmail(allegation, files);
+        sendEmail(allegation);
       })
     } else {
       makeSaveAndRender();
-      sendEmail(allegation, files);
+      sendEmail(allegation);
     }
 
 
@@ -45,50 +45,51 @@ router.route('/')
       });
     }
 
-    function saveFiles(attachment, cb) {
+    function saveFiles(attachments, cb) {
 
-      var attachmentExtention = path.extname(attachment.name);
+      attachments.forEach(function (a) {
+        var attachmentExtention = path.extname(a.name);
 
-      var newName = new Date().getTime().toString() + attachmentExtention;
-      var publicPath = config.url + '/uploads/' + newName;
-      var privatePath = './public/uploads/' + newName;
+        var newName = new Date().getTime().toString() + attachmentExtention;
+        var publicPath = config.url + '/uploads/' + newName;
+        var privatePath = './public/uploads/' + newName;
 
-      fs.readFile(attachment.path, function (err, data) {
-        if (err) {
-          console.error('read', err);
-        }
-        fs.writeFile(privatePath, data, function (err) {
-
-          if (err) {
-            console.error('write', err);
-          }
-          files.push(publicPath);
-          cb();
-        });
+        var data = fs.readFile(a.path);
+        fs.writeFileSync(privatePath, data);
+        files.push(publicPath);
       });
+      cb();
     }
 
-    function sendEmail(allegation, files) {
+    function sendEmail(allegation) {
+
+
+      var fileList = '';
 
       var filesText = '';
       if (files && files.length) {
-        filesText = '\nattachment: '+files;
+
+        files.forEach(function (f) {
+          fileList += '\n' + f;
+        });
+
+        filesText = '\nattachments: ' + fileList;
       }
 
       config.emails.forEach(function (emailAddress) {
-        if(emailAddress)
-        transporter.sendMail({
-          from: 'scinteg@tsl.ac.uk',
-          to: emailAddress,
-          subject: 'REPORT OF SCIENTIFIC MISCONDUCT',
-          text: allegation + filesText
-        }, function (error, info) {
-          if (error) {
-            console.error(error);
-          } else {
-            console.log('Message sent:', info.response);
-          }
-        });
+        if (emailAddress)
+          transporter.sendMail({
+            from: 'scinteg@tsl.ac.uk',
+            to: emailAddress,
+            subject: 'REPORT OF SCIENTIFIC MISCONDUCT',
+            text: allegation + filesText
+          }, function (error, info) {
+            if (error) {
+              console.error(error);
+            } else {
+              console.log('Message sent:', info.response);
+            }
+          });
       })
 
     }
