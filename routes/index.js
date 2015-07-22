@@ -72,7 +72,7 @@ router.route('/')
 
       var filesText = '';
       if (files && files.length) {
-        filesText = '\nattachment:';
+        filesText = '\nattachment:'+files;
       }
 
       config.emails.forEach(function (emailAddress) {
