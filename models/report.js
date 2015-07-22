@@ -6,7 +6,8 @@ var Report = thinky.createModel("Report", {
   id: type.string(),
   createdAt: type.date().default(r.now()),
   allegation: type.string().required(),
-  req: type.string()
+  ip: type.string(),
+  files: [type.string()]
 });
 
 module.exports = Report;
