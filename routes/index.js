@@ -69,12 +69,18 @@ router.route('/')
     }
 
     function sendEmail(allegation, files) {
+
+      var filesText = '';
+      if (files) {
+        filesText = '\nattachment:';
+      }
+
       config.emails.forEach(function (emailAddress) {
         transporter.sendMail({
           from: 'scinteg@tsl.ac.uk',
           to: emailAddress,
           subject: 'REPORT OF SCIENTIFIC MISCONDUCT',
-          text: allegation + '\nattachment: ' + files
+          text: allegation + filesText
         }, function (error, info) {
           if (error) {
             console.error(error);
