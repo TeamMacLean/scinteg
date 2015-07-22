@@ -71,11 +71,12 @@ router.route('/')
     function sendEmail(allegation, files) {
 
       var filesText = '';
-      if (files) {
+      if (files && files.length) {
         filesText = '\nattachment:';
       }
 
       config.emails.forEach(function (emailAddress) {
+        if(emailAddress)
         transporter.sendMail({
           from: 'scinteg@tsl.ac.uk',
           to: emailAddress,
