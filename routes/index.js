@@ -24,14 +24,18 @@ router.route('/')
     var attachments = req.files['attachment[]'];
     var files = [];
 
-    if (attachments) {
-      saveFiles(attachments, function () {
+    if (allegation && allegation.length && allegation.length > 0) {
+      if (attachments) {
+        saveFiles(attachments, function () {
+          makeSaveAndRender();
+          sendEmail(allegation);
+        })
+      } else {
         makeSaveAndRender();
         sendEmail(allegation);
-      })
+      }
     } else {
-      makeSaveAndRender();
-      sendEmail(allegation);
+      return res.render('error', {error: ''});
     }
 
 
@@ -47,17 +51,31 @@ router.route('/')
 
     function saveFiles(attachments, cb) {
 
-      attachments.forEach(function (a) {
+
+      if (attachments.length) {
+        attachments.forEach(function (a) {
+          saveIt(a)
+        });
+      } else {
+        saveIt(attachments);
+      }
+
+      function saveIt(a) {
+
         var attachmentExtention = path.extname(a.name);
 
         var newName = new Date().getTime().toString() + attachmentExtention;
         var publicPath = config.url + '/uploads/' + newName;
         var privatePath = './public/uploads/' + newName;
 
-        var data = fs.readFile(a.path);
+
+        var data = fs.readFileSync(a.path);
+        console.error(a.path);
         fs.writeFileSync(privatePath, data);
         files.push(publicPath);
-      });
+      }
+
+
       cb();
     }
 
