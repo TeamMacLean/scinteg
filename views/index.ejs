@@ -16,21 +16,51 @@
             <textarea name="allegation" id="allegation"></textarea>
         </fieldset>
 
-        <fieldset>
-            <label>If you wish to include any attachments, please add them here:</label>
-            <input type="file" name="attachment[]" id="attachment" multiple="" onChange="makeFileList();">
-        </fieldset>
-
-        <fieldset>
-            <label>Files selected</label>
-            <ul id="fileList">
-                <li>No Files Selected</li>
-            </ul>
-        </fieldset>
+        <div id="upload-area"></div>
 
         <input type="submit" class="primary" value="SUBMIT">
 
     </form>
+
+    <script type="text/jsx">
+
+        var FileInput = React.createClass({
+            render: function () {
+                return (
+                        <fieldset>
+                            <input name="attachment[]" className="deletable" type="file" key={this.props.index}
+                                   onChange={this.props.onChange.bind(this,this.props.index)}></input>
+                        </fieldset>
+                )
+            }
+        });
+
+        var UploadApp = React.createClass({
+            getInitialState: function () {
+                return {files: ['0']};
+            },
+            onChange: function (index) {
+                var newFiles = this.state.files.concat([index]);
+                this.setState({files: newFiles});
+                console.log(this.state);
+            },
+            render: function () {
+                var self = this;
+                return (
+                        <div>
+                            {self.state.files.map(function (file, i) {
+                                return (
+                                        <FileInput index={i} onChange={self.onChange}/>
+                                )
+                            })}
+                        </div>
+
+                )
+
+            }
+        });
+        React.render(<UploadApp/>, document.getElementById('upload-area'));
+    </script>
 
 
 </div>

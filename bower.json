@@ -13,6 +13,7 @@
     "tests"
   ],
   "dependencies": {
-    "terrier": "*"
+    "terrier": "*",
+    "react": "~0.13.3"
   }
 }

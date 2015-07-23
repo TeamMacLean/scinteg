@@ -24,8 +24,10 @@ router.route('/')
     var attachments = req.files['attachment[]'];
     var files = [];
 
+
     if (allegation && allegation.length && allegation.length > 0) {
       if (attachments) {
+
         saveFiles(attachments, function () {
           makeSaveAndRender();
           sendEmail(allegation);
@@ -34,6 +36,7 @@ router.route('/')
         makeSaveAndRender();
         sendEmail(allegation);
       }
+
     } else {
       return res.render('error', {error: ''});
     }
