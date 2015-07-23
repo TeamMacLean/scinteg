@@ -1,0 +1,26 @@
+<% include head.ejs %>
+
+<div class="container">
+
+    <h1>REPORT OF SCIENTIFIC MISCONDUCT</h1>
+
+    <p>Completing and submitting this form will send an anonymous email notification containing the contents and
+        attachments to the TSL Council Chair, Head of Laboratory and Head of Administration</p>
+
+    <br>
+
+    <form method="post" action="/" enctype="multipart/form-data">
+
+        <fieldset>
+            <label>Please summarise your allegation below:</label>
+            <textarea name="allegation" id="allegation"></textarea>
+        </fieldset>
+
+        <div id="upload-area"></div>
+
+        <input type="submit" class="primary" value="SUBMIT">
+
+    </form>
+
+</div>
+<% include foot.ejs %>
