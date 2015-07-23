@@ -16,7 +16,6 @@ var UploadApp = React.createClass({displayName: "UploadApp",
   onChange: function (index) {
     var newFiles = this.state.files.concat([index]);
     this.setState({files: newFiles});
-    console.log(this.state);
   },
   render: function () {
     var self = this;
