@@ -4,6 +4,7 @@ var smtpTransport = require('nodemailer-smtp-transport');
 var Report = require('../models/report');
 var path = require('path');
 var fs = require('fs');
+var uuid = require('node-uuid');
 
 var config = require('../config');
 
