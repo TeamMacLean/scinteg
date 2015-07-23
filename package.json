@@ -10,6 +10,7 @@
     "ejs": "~2.3.1",
     "express": "~4.12.4",
     "multer": "^0.1.8",
+    "node-uuid": "^1.4.3",
     "nodemailer": "^1.4.0",
     "nodemailer-smtp-transport": "^1.0.3",
     "thinky": "^2.0.7"

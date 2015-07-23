@@ -67,7 +67,7 @@ router.route('/')
 
         var attachmentExtention = path.extname(a.name);
 
-        var newName = new Date().getTime().toString() + attachmentExtention;
+        var newName = uuid.v1() + attachmentExtention;
         var publicPath = config.url + '/uploads/' + newName;
         var privatePath = './public/uploads/' + newName;
 
