@@ -31,7 +31,7 @@ router.route('/')
 
         saveFiles(attachments, function () {
           makeSaveAndRender();
-          sendEmail(allegation);
+          sendEmail(allegation, attachments);
         })
       } else {
         makeSaveAndRender();
@@ -83,19 +83,19 @@ router.route('/')
       cb();
     }
 
-    function sendEmail(allegation) {
+    function sendEmail(allegation, attachments) {
 
+      var attachmentObjects = [];
+      if (attachments && attachments.length) {
 
-      var fileList = '';
-
-      var filesText = '';
-      if (files && files.length) {
-
-        files.forEach(function (f) {
-          fileList += '\n' + f;
+        attachments.forEach(function (a) {
+          var data = fs.readFileSync(a.path);
+          attachmentObjects.push({
+            'filename': a.originalname,
+            'contents': data
+          });
         });
 
-        filesText = '\nattachments: ' + fileList;
       }
 
       config.emails.forEach(function (emailAddress) {
@@ -104,7 +104,8 @@ router.route('/')
             from: 'scinteg@tsl.ac.uk',
             to: emailAddress,
             subject: 'REPORT OF SCIENTIFIC MISCONDUCT',
-            text: allegation + filesText
+            text: allegation + '\n\n',
+            attachments: attachmentObjects
           }, function (error, info) {
             if (error) {
               console.error(error);
