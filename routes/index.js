@@ -78,24 +78,24 @@ router.route('/')
         fs.writeFileSync(privatePath, data);
         files.push(publicPath);
       }
-
-
       cb();
     }
 
     function sendEmail(allegation, attachments) {
 
       var attachmentObjects = [];
-      if (attachments && attachments.length) {
+      if (attachments) {
+
+        if (!attachments.length) {
+          attachments = [attachments];
+        }
 
         attachments.forEach(function (a) {
-          var data = fs.readFileSync(a.path);
           attachmentObjects.push({
-            'filename': a.originalname,
-            'contents': data
+            filename: a.originalname,
+            path: a.path
           });
         });
-
       }
 
       config.emails.forEach(function (emailAddress) {
