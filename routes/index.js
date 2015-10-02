@@ -74,7 +74,6 @@ router.route('/')
 
 
         var data = fs.readFileSync(a.path);
-        console.error(a.path);
         fs.writeFileSync(privatePath, data);
         files.push(publicPath);
       }
